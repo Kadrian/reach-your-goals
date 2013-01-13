@@ -1,0 +1,26 @@
+@import "bootstrap";
+body { padding-top: 60px; }
+@import "bootstrap-responsive";
+
+h1 {
+    padding: 100px;
+    text-align: center;
+    font-size: 500%;
+}
+
+.signupButton{
+	background-color:#559911;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	border:2px solid #dcdcdc;
+	display:inline-block;
+	color: #EEEEEE;
+	font-size:28px;
+	font-weight:bold;
+	padding:30px 50px;
+	text-decoration:none;
+}.signupButton:active {
+	position:relative;
+	top:1px;
+}
