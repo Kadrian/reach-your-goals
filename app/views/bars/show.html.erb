@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @bar.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @bar.description %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @bar.status %>
+</p>
+
+
+<%= link_to 'Edit', edit_bar_path(@bar) %> |
+<%= link_to 'Back', bars_path %>

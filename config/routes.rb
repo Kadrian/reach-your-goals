@@ -1,4 +1,7 @@
 Progress::Application.routes.draw do
+  resources :bars
+
+
   devise_for :users
 
   root :to => "application#index"
