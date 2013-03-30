@@ -1,4 +1,4 @@
-<h1>Learn, bro!</h1>
+<h1 class="blub">Learn, bro!</h1>
 
 <div style="margin:0 auto;" height="200">
     <canvas id="draw">
@@ -54,6 +54,7 @@
 
         ctx.fillStyle="white";
         ctx.font = "10px sans-serif";
+
         for (var i = 0; i < 31; i++){
             ctx.fillRect(i * (n+space) + dist, yPlayer1, n, n);
             ctx.fillRect(i * (n+space) + dist, yPlayer2, n, n);
@@ -61,6 +62,22 @@
             ctx.fillText(i.toString(), i * (n+space) + dist + n/3, yPlayer2 + n + 10);
         }
 
+
+        ctx.strokeStyle="#FFF";
+        ctx.lineWidth=3;
+        var xOffset = (n+space/2) + dist;
+
+        for (var i = 1; i < 5; i++){
+            ctx.beginPath();
+            ctx.moveTo(i * 7 * (n+space) + xOffset ,yPlayer1-20);
+            ctx.lineTo(i * 7 * (n+space) + xOffset ,yPlayer1+40);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(i * 7 * (n+space) + xOffset, yPlayer2-20);
+            ctx.lineTo(i * 7 * (n+space) + xOffset, yPlayer2+40);
+            ctx.stroke();
+        }
+        
         ctx.fillStyle="red";
         ctx.fillRect(31 * (n+space) + dist, yPlayer1, n, n);
         ctx.fillRect(31 * (n+space) + dist, yPlayer2, n, n);
