@@ -1,6 +1,4 @@
 Progress::Application.routes.draw do
-  resources :bars
-
 
   devise_for :users
 
@@ -9,7 +7,9 @@ Progress::Application.routes.draw do
   # first created -> highest priority.
 
   # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
+  match 'bars' => 'bars#index'
+  match 'bars/save' => 'bars#save'
+  match 'bars/load' => 'bars#load'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:

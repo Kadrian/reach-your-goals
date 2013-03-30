@@ -18,7 +18,7 @@ class BarsControllerTest < ActionController::TestCase
 
   test "should create bar" do
     assert_difference('Bar.count') do
-      post :create, bar: { description: @bar.description, status: @bar.status, title: @bar.title }
+      post :create, bar: { name: @bar.name, status: @bar.status }
     end
 
     assert_redirected_to bar_path(assigns(:bar))
@@ -35,7 +35,7 @@ class BarsControllerTest < ActionController::TestCase
   end
 
   test "should update bar" do
-    put :update, id: @bar, bar: { description: @bar.description, status: @bar.status, title: @bar.title }
+    put :update, id: @bar, bar: { name: @bar.name, status: @bar.status }
     assert_redirected_to bar_path(assigns(:bar))
   end
 

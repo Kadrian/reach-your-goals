@@ -1,3 +1,3 @@
 class Bar < ActiveRecord::Base
-  attr_accessible :description, :status, :title
+  attr_accessible :name, :status
 end

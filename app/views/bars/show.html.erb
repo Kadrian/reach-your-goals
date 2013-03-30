@@ -1,20 +1,125 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Title:</b>
-  <%= @bar.title %>
-</p>
+<h1>Learn, bro!</h1>
 
-<p>
-  <b>Description:</b>
-  <%= @bar.description %>
-</p>
+<div style="margin:0 auto;" height="200">
+    <canvas id="draw">
+    </canvas>
+</div>
 
-<p>
-  <b>Status:</b>
-  <%= @bar.status %>
-</p>
+<script>
+    var c = document.getElementById("draw");
+    var ctx = c.getContext("2d");
+    c.addEventListener("click", onClick, false);
 
+    // parameters 
+    var n = 20;
+    var dist = 40;
 
-<%= link_to 'Edit', edit_bar_path(@bar) %> |
-<%= link_to 'Back', bars_path %>
+    // set height and width
+    var viewportHeight = window.innerHeight;
+    var width = window.innerWidth - window.innerWidth * 0.2; 
+    var height= window.innerHeight / 2;
+    c.setAttribute("width", width);
+    c.setAttribute("height", height);
+
+    // load data
+    var p1 = 0;
+    var p2 = 4;
+    var name1 = "";
+    var name2 = "";
+
+    var yPlayer1 = height/3;
+    var yPlayer2 = 2*height/3;
+
+    refresh();
+
+        // whatup 
+        // jQuery.get('http://localhost/foo.txt', function(data) {
+        //    alert(data);
+        // });
+
+    function refresh(){
+        ctx.fillStyle="black";
+        ctx.fillRect(0,0,width,height);
+
+        ctx.fillStyle="white";
+        for (var i = 0; i < 25; i++){
+            ctx.fillRect(i * (n + n) + dist, yPlayer1, n, n);
+            ctx.fillRect(i * (n + n) + dist, yPlayer2, n, n);
+        }
+
+        ctx.fillStyle="red";
+        ctx.fillRect(26 * (n + n) + dist, yPlayer1, n, n);
+        ctx.fillRect(26 * (n + n) + dist, yPlayer2, n, n);
+
+        ctx.font = "bold 30px sans-serif";
+        ctx.fillText(name1, dist, yPlayer1 - 2*n);
+        ctx.fillText(name2, dist, yPlayer2 - 2*n);
+
+        drawPlayers(p1, p2);
+    }
+
+    function drawPlayers(a, b){
+        var offX = -10;
+        var offY = -10; 
+
+        // images 
+        ctx.fillStyle="orange";
+        ctx.fillRect(a * (n + n) + dist + offX, yPlayer1 + offY, 40, 40);
+        ctx.fillRect(b * (n + n) + dist + offX, yPlayer2 + offY, 40, 40);
+    }
+
+    function save(p1, p2){
+        $.ajax({
+            type: "POST",
+            url: '/bars/', //sumbits it to the given url of the form
+            data: {"p1" : p1, "p2" :p2},
+            dataType: "JSON" 
+        }).success(function(data){
+            // do something
+        });
+            return false; // prevents normal behaviour 
+        }
+
+    // events
+    function onClick(e){
+        // get color
+        var pos = findPos(this);
+        var x = e.pageX - pos.x;
+        var y = e.pageY - pos.y;
+
+        console.log("x=" + x + ", y=" + y);
+        for (var i = 0; i < 25; i++){
+            var xTest = i * (n + n) + dist;
+            var yTest = yPlayer1;
+            var yTest2 = yPlayer2;
+            if (x > xTest && x < xTest + n){
+                if (y > yTest && y < yTest+n){
+                    p1 = i;
+                    save(p1, p2);
+                    refresh();
+                    return;
+                }
+                else if (y > yTest2 && y < yTest2 + n){
+                    p2 = i;
+                    save(p1, p2);
+                    refresh();
+                    return;
+                }
+            }
+        }
+    }
+
+    function findPos(obj) {
+        var curleft = 0, curtop = 0;
+        if (obj.offsetParent) {
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+            return { x: curleft, y: curtop };
+        }
+        return undefined;
+    }
+</script>
