@@ -23,6 +23,7 @@
 
     var yPlayer1 = height/3;
     var yPlayer2 = 2*height/3;
+    var space = 12;
 
     // load data
     var p1 = 0;
@@ -53,16 +54,16 @@
 
         ctx.fillStyle="white";
         ctx.font = "10px sans-serif";
-        for (var i = 0; i < 25; i++){
-            ctx.fillRect(i * 2*n + dist, yPlayer1, n, n);
-            ctx.fillRect(i * 2*n + dist, yPlayer2, n, n);
-            ctx.fillText(i.toString(), i * 2*n + dist + n/3, yPlayer1 + n + 10);
-            ctx.fillText(i.toString(), i * 2*n + dist + n/3, yPlayer2 + n + 10);
+        for (var i = 0; i < 30; i++){
+            ctx.fillRect(i * (n+space) + dist, yPlayer1, n, n);
+            ctx.fillRect(i * (n+space) + dist, yPlayer2, n, n);
+            ctx.fillText((i+1).toString(), i * (n+space) + dist + n/3, yPlayer1 + n + 10);
+            ctx.fillText((i+1).toString(), i * (n+space) + dist + n/3, yPlayer2 + n + 10);
         }
 
         ctx.fillStyle="red";
-        ctx.fillRect(26 * (n + n) + dist, yPlayer1, n, n);
-        ctx.fillRect(26 * (n + n) + dist, yPlayer2, n, n);
+        ctx.fillRect(31 * (n+space) + dist, yPlayer1, n, n);
+        ctx.fillRect(31 * (n+space) + dist, yPlayer2, n, n);
 
         ctx.fillStyle="white";
         ctx.font = "30px sans-serif";
@@ -77,12 +78,12 @@
 
         // images 
         ctx.fillStyle="orange";
-        ctx.fillRect(a * 2*n + dist + off, yPlayer1 + off, 40, 40);
-        ctx.fillRect(b * 2*n + dist + off, yPlayer2 + off, 40, 40);
+        ctx.fillRect(a * (n+space) + dist + off, yPlayer1 + off, 40, 40);
+        ctx.fillRect(b * (n+space) + dist + off, yPlayer2 + off, 40, 40);
         ctx.fillStyle="white";
         ctx.font = "30px sans-serif";
-        ctx.fillText(a.toString(), a * 2*n + dist -5, yPlayer1 + 20);
-        ctx.fillText(b.toString(), b * 2*n + dist -5, yPlayer2 + 20);
+        ctx.fillText((a+1).toString(), a * (n+space) + dist -5, yPlayer1 + 20);
+        ctx.fillText((b+1).toString(), b * (n+space) + dist -5, yPlayer2 + 20);
     }
 
     function save(p1, p2){
@@ -104,8 +105,8 @@
         var y = e.pageY - pos.y;
 
         console.log("x=" + x + ", y=" + y);
-        for (var i = 0; i < 25; i++){
-            var xTest = i * (n + n) + dist;
+        for (var i = 0; i < 30; i++){
+            var xTest = i * (n+space) + dist;
             var yTest = yPlayer1;
             var yTest2 = yPlayer2;
             if (x > xTest && x < xTest + n){
