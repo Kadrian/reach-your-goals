@@ -6,4 +6,4 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Bar.create([{name:'Kai', status:0},{name:'Schosch', status:0}])
+Bar.create([{name:'Schosch', status:0},{name:'Kai', status:0}])
