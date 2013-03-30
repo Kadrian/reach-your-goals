@@ -54,11 +54,11 @@
 
         ctx.fillStyle="white";
         ctx.font = "10px sans-serif";
-        for (var i = 0; i < 30; i++){
+        for (var i = 0; i < 31; i++){
             ctx.fillRect(i * (n+space) + dist, yPlayer1, n, n);
             ctx.fillRect(i * (n+space) + dist, yPlayer2, n, n);
-            ctx.fillText((i+1).toString(), i * (n+space) + dist + n/3, yPlayer1 + n + 10);
-            ctx.fillText((i+1).toString(), i * (n+space) + dist + n/3, yPlayer2 + n + 10);
+            ctx.fillText(i.toString(), i * (n+space) + dist + n/3, yPlayer1 + n + 10);
+            ctx.fillText(i.toString(), i * (n+space) + dist + n/3, yPlayer2 + n + 10);
         }
 
         ctx.fillStyle="red";
@@ -82,8 +82,8 @@
         ctx.fillRect(b * (n+space) + dist + off, yPlayer2 + off, 40, 40);
         ctx.fillStyle="white";
         ctx.font = "30px sans-serif";
-        ctx.fillText((a+1).toString(), a * (n+space) + dist -5, yPlayer1 + 20);
-        ctx.fillText((b+1).toString(), b * (n+space) + dist -5, yPlayer2 + 20);
+        ctx.fillText(a.toString(), a * (n+space) + dist -5, yPlayer1 + 20);
+        ctx.fillText(b.toString(), b * (n+space) + dist -5, yPlayer2 + 20);
     }
 
     function save(p1, p2){
@@ -105,7 +105,7 @@
         var y = e.pageY - pos.y;
 
         console.log("x=" + x + ", y=" + y);
-        for (var i = 0; i < 30; i++){
+        for (var i = 0; i < 31; i++){
             var xTest = i * (n+space) + dist;
             var yTest = yPlayer1;
             var yTest2 = yPlayer2;
