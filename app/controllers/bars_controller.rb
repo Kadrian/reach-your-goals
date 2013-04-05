@@ -12,10 +12,10 @@ class BarsController < ProtectedController
 
   def save 
     @bars = Bar.all
-    @bars[0].status = params[:p1]
-    @bars[1].status = params[:p2]
-    @bars.each do |bar|
-      bar.save
+    params[:players].each do |player|
+        @bar = Bar.find_by_name(player[1][:name])
+        @bar.score = player[1][:score].to_i
+        @bar.save
     end
 
     respond_to do |format|

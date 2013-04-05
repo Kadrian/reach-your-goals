@@ -10,9 +10,11 @@
     var ctx = c.getContext("2d");
     c.addEventListener("click", onClick, false);
 
-    // parameters 
+    // global parameters 
     var n = 20;
     var dist = 40;
+    var space = 12;
+    var days = 30;
 
     // set height and width
     var viewportHeight = window.innerHeight;
@@ -20,99 +22,94 @@
     var height= window.innerHeight / 2;
     c.setAttribute("width", width);
     c.setAttribute("height", height);
+    
 
-    var yPlayer1 = height/3;
-    var yPlayer2 = 2*height/3;
-    var space = 12;
+    function Player(score, name){
+        this.y = 0;
+        this.name = name;
+        this.score = score;
+    }
 
-    // load data
-    var p1 = 0;
-    var p2 = 0;
-    var p1Name = "";
-    var p2Name = "";
+    // init players array
+    players = new Array();
 
     refresh();
 
+    // initialize
     $.getJSON('/bars/load', function(data){
         console.log(data);
-        console.log("HELLO");
-        p1 = data[0].status;
-        p2 = data[1].status;
-        p1Name = data[0].name;
-        p2Name = data[1].name;
+        // load
+        data.forEach(function(e){
+            players.push(new Player(e.score, e.name));
+        });
+        // distribute players with y values over the height
+        players.forEach(function(e, i){
+            e.y = (i+1) * height / (players.length + 1);
+        });
         refresh();
     });
-
-        // whatup 
-        // jQuery.get('http://localhost/foo.txt', function(data) {
-        //    alert(data);
-        // });
 
     function refresh(){
         ctx.fillStyle="black";
         ctx.fillRect(0,0,width,height);
 
         ctx.fillStyle="white";
-        ctx.font = "10px sans-serif";
 
-        for (var i = 0; i < 31; i++){
-            ctx.fillRect(i * (n+space) + dist, yPlayer1, n, n);
-            ctx.fillRect(i * (n+space) + dist, yPlayer2, n, n);
-            ctx.fillText(i.toString(), i * (n+space) + dist + n/3, yPlayer1 + n + 10);
-            ctx.fillText(i.toString(), i * (n+space) + dist + n/3, yPlayer2 + n + 10);
+        for (var i = 0; i <= days; i++){
+            players.forEach(function(e){
+                if (i == 21)
+                    ctx.fillStyle="red";
+
+                ctx.fillRect(i * (n+space) + dist, e.y, n, n);
+                // small numbers
+                ctx.fillStyle="white";
+                ctx.font = "10px sans-serif";
+                ctx.fillText(i.toString(), i * (n+space) + dist + n/3, e.y + n + 10);
+            });
         }
-
 
         ctx.strokeStyle="#FFF";
         ctx.lineWidth=3;
         var xOffset = (n+space/2) + dist;
 
-        for (var i = 1; i < 5; i++){
-            ctx.beginPath();
-            ctx.moveTo(i * 7 * (n+space) + xOffset ,yPlayer1-20);
-            ctx.lineTo(i * 7 * (n+space) + xOffset ,yPlayer1+40);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(i * 7 * (n+space) + xOffset, yPlayer2-20);
-            ctx.lineTo(i * 7 * (n+space) + xOffset, yPlayer2+40);
-            ctx.stroke();
-        }
-        
-        ctx.fillStyle="red";
-        ctx.fillRect(31 * (n+space) + dist, yPlayer1, n, n);
-        ctx.fillRect(31 * (n+space) + dist, yPlayer2, n, n);
+        players.forEach(function(e){
+            // paint lines
+            for (var i = 1; i < 5; i++){
+                ctx.beginPath();
+                ctx.moveTo(i * 7 * (n+space) + xOffset, e.y-20);
+                ctx.lineTo(i * 7 * (n+space) + xOffset, e.y+40);
+                ctx.stroke();
+            }
+            // paint red square
+            ctx.fillStyle="red";
+            ctx.fillRect((days+1) * (n+space) + dist, e.y, n, n);
 
-        ctx.fillStyle="white";
-        ctx.font = "30px sans-serif";
-        ctx.fillText(p1Name, dist, yPlayer1 - 2*n);
-        ctx.fillText(p2Name, dist, yPlayer2 - 2*n);
+            ctx.fillStyle="white";
+            ctx.font = "30px sans-serif";
+            ctx.fillText(e.name, dist, e.y - 2*n);
 
-        drawPlayers(p1, p2);
+            // draw score 
+            var off = -10;
+            ctx.fillStyle="orange";
+            ctx.fillRect(e.score * (n+space) + dist + off, e.y + off, 40, 40);
+            ctx.fillStyle="white";
+            if (e.score == 21)
+                ctx.fillStyle="red";
+            ctx.font = "30px sans-serif";
+            ctx.fillText(e.score.toString(), e.score * (n+space) + dist -5, e.y + 20);
+        });
     }
 
-    function drawPlayers(a, b){
-        var off = -10;
-
-        // images 
-        ctx.fillStyle="orange";
-        ctx.fillRect(a * (n+space) + dist + off, yPlayer1 + off, 40, 40);
-        ctx.fillRect(b * (n+space) + dist + off, yPlayer2 + off, 40, 40);
-        ctx.fillStyle="white";
-        ctx.font = "30px sans-serif";
-        ctx.fillText(a.toString(), a * (n+space) + dist -5, yPlayer1 + 20);
-        ctx.fillText(b.toString(), b * (n+space) + dist -5, yPlayer2 + 20);
-    }
-
-    function save(p1, p2){
+    function save(){
         $.ajax({
             type: "POST",
             url: '/bars/save', //sumbits it to the given url of the form
-            data: {"p1" : p1, "p2" :p2},
+            data: {players: players},
             dataType: "JSON" 
         }).success(function(data){
             // do something
         });
-   }
+    }
 
     // events
     function onClick(e){
@@ -121,24 +118,23 @@
         var x = e.pageX - pos.x;
         var y = e.pageY - pos.y;
 
+        // detect collision
         console.log("x=" + x + ", y=" + y);
-        for (var i = 0; i < 31; i++){
+        // all fields
+        for (var i = 0; i <= days; i++){
             var xTest = i * (n+space) + dist;
-            var yTest = yPlayer1;
-            var yTest2 = yPlayer2;
             if (x > xTest && x < xTest + n){
-                if (y > yTest && y < yTest+n){
-                    p1 = i;
-                    save(p1, p2);
-                    refresh();
-                    return;
-                }
-                else if (y > yTest2 && y < yTest2 + n){
-                    p2 = i;
-                    save(p1, p2);
-                    refresh();
-                    return;
-                }
+            // all players
+                players.forEach(function(e){
+                    var yTest = e.y;
+                    if (y > yTest && y < yTest+n){
+                        e.score = i;
+                        // TODO: SAVE NOT ALL BUT ONLY SELECTED
+                        save();
+                        refresh();
+                        return;
+                    }
+                });
             }
         }
     }
