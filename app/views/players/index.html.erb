@@ -36,7 +36,7 @@
     refresh();
 
     // initialize
-    $.getJSON('/bars/load', function(data){
+    $.getJSON('/players/load', function(data){
         console.log(data);
         // load
         data.forEach(function(e){
@@ -103,7 +103,7 @@
     function save(){
         $.ajax({
             type: "POST",
-            url: '/bars/save', //sumbits it to the given url of the form
+            url: '/players/save', //sumbits it to the given url of the form
             data: {players: players},
             dataType: "JSON" 
         }).success(function(data){

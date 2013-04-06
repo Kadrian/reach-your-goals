@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def index
       if user_signed_in?
-        redirect_to bars_path 
+        redirect_to players_path 
       else
         render :index
       end

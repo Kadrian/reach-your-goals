@@ -6,5 +6,5 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Bar.create([{name:'Schosch', score:0, y:0},
+Player.create([{name:'Schosch', score:0, y:0},
            {name:'Kai', score:0, y:0}])

@@ -7,9 +7,9 @@ Progress::Application.routes.draw do
   # first created -> highest priority.
 
   # Sample of regular route:
-  match 'bars' => 'bars#index'
-  match 'bars/save' => 'bars#save'
-  match 'bars/load' => 'bars#load'
+  match 'players' => 'players#index'
+  match 'players/save' => 'players#save'
+  match 'players/load' => 'players#load'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
