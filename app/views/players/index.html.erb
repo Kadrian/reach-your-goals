@@ -1,41 +1,67 @@
-<h1 class="blub">Learn, bro!</h1>
+<div class="row" style="line-height:100px; padding-top:50px;">
+    <div class="span8">
+        <h1 id="headline" class="blub">Learn, bro!</h1>
+    </div>
 
-<div style="margin:0 auto;" height="200">
+    <div class="span4">
+        <div style="line-height:100px; margin:10px 0;">
+            <a id="startbutton" onClick="startTimer();" class="btn btn-large">Start today's session</a>
+        </div>
+        <h2 style="display:none;" id="timer">Time</h2>
+    </div>
+</div>
+
+<div class="row">
+<div class="span12">
     <canvas id="draw">
     </canvas>
 </div>
+</div>
 
 <script>
-    var c = document.getElementById("draw");
-    var ctx = c.getContext("2d");
-    c.addEventListener("click", onClick, false);
 
-    // global parameters 
-    var n = 20;
-    var dist = 40;
-    var space = 12;
-    var days = 30;
-
-    // set height and width
-    var viewportHeight = window.innerHeight;
-    var width = window.innerWidth - window.innerWidth * 0.2; 
-    var height= window.innerHeight / 2;
-    c.setAttribute("width", width);
-    c.setAttribute("height", height);
-    
-
+    // -------------------- 
+    // class definition
+    // -------------------- 
     function Player(score, name){
         this.y = 0;
         this.name = name;
         this.score = score;
     }
 
+    // -------------------- 
+    // global parameters 
+    // -------------------- 
+
+    // canvas
+    var c = document.getElementById("draw");
+    var ctx = c.getContext("2d");
+    c.addEventListener("click", onClick, false);
+    var timer = $('#timer');
+    var startbutton = $('#startbutton');
+
     // init players array
     players = new Array();
 
+    // init parameters
+    var n = 20;
+    var dist = 40;
+    var space = 12;
+    var days = 30;
+    var seconds = 30 * 60 + 1;
+
+    // set height and width
+    var viewportHeight = window.innerHeight;
+    var width = window.innerWidth - window.innerWidth * 0.2; 
+    var height= 400;
+    c.setAttribute("width", width);
+    c.setAttribute("height", height);
+
+    // -------------------- 
+    // initialize
+    // -------------------- 
     refresh();
 
-    // initialize
     $.getJSON('/players/load', function(data){
         console.log(data);
         // load
@@ -49,6 +75,9 @@
         refresh();
     });
 
+    // -------------------- 
+    // helping functions 
+    // -------------------- 
     function refresh(){
         ctx.fillStyle="black";
         ctx.fillRect(0,0,width,height);
@@ -110,6 +139,36 @@
         }).success(function(data){
             // do something
         });
+    }
+
+    function startTimer(){
+        startbutton.hide();
+        timer.show();
+        tick();
+    }
+
+    function tick(){
+        seconds -= 1;
+        if (seconds > 0){
+            // calc min and sec 
+            var min = (Math.floor(seconds / 60)).toString();
+            var sec = (seconds % 60);
+            sec = (sec > 9) ? sec.toString() : "0" + sec.toString();
+            var time = min + ":" + sec; 
+
+            timer.html(time);
+            window.setTimeout(tick,1000);
+        }
+        else{
+            // TIME'S UP
+            timer.css("visibility", "hidden");
+            $('#headline').html("Done, bro!");
+            cheer = new Audio('cheer.wav');
+            console.log(cheer)
+            cheer.load();
+            cheer.play();
+        }
+            
     }
 
     // events

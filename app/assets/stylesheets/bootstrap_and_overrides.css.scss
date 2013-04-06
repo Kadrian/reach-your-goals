@@ -5,25 +5,26 @@ body {
 }
 @import "bootstrap-responsive";
 
-.frontpage{
-    padding: 50px;
-    text-align: center;
-    font-size: 100px;
-    line-height:100px;
-}
-
 .signupButton{
 	font-size:38px;
 	padding:30px 60px;
 }
 
+#timer{
+    margin:10px 0;
+	font-size:80px;
+    line-height:100px;
+    text-align:left;
+}
+
 h1 {
     font-size:100px;
+    line-height:100px;
     text-align:center;
-    margin:50px;
 }
 
 h2 {
     font-size:20px;
+    font-weight:normal;
     text-align:center;
 }
