@@ -84,11 +84,12 @@
             ctx.fillStyle="red";
             ctx.fillRect((days+1) * (n+space) + dist, e.y, n, n);
 
+            // paint names
             ctx.fillStyle="white";
             ctx.font = "30px sans-serif";
-            ctx.fillText(e.name, dist, e.y - 2*n);
+            ctx.fillText(e.name, dist, e.y - n);
 
-            // draw score 
+            // paint score 
             var off = -10;
             ctx.fillStyle="orange";
             ctx.fillRect(e.score * (n+space) + dist + off, e.y + off, 40, 40);
